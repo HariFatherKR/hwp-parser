@@ -477,7 +477,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install hwpparser[all]
-          sudo apt-get install -y pandoc libreoffice
+          sudo apt-get install -y pandoc chromium-browser
 
       - name: Convert HWP to Text
         run: |

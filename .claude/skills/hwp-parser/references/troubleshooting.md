@@ -38,23 +38,30 @@ pip install hwpparser[all]
 
 ## 변환 문제
 
-### PDF 변환 실패 - LibreOffice 없음
+### PDF 변환 실패 - Chrome 없음
 
 **증상**:
 ```
-DependencyError: LibreOffice not found
+DependencyError: Chrome not found
 ```
 
 **해결**:
 ```bash
 # macOS
-brew install --cask libreoffice
+brew install --cask google-chrome
+# 또는 Chromium
+brew install --cask chromium
 
 # Ubuntu/Debian
-sudo apt-get install libreoffice
+sudo apt install google-chrome-stable
+# 또는 Chromium
+sudo apt install chromium-browser
 
-# 설치 확인
-which soffice
+# 설치 확인 (macOS)
+ls -la "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# 설치 확인 (Linux)
+which google-chrome
+which chromium-browser
 ```
 
 ### PDF 변환 - 권한 오류
@@ -161,21 +168,21 @@ result = hwpparser.batch_convert(
 
 ## 플랫폼별 문제
 
-### macOS - LibreOffice 경로 인식 실패
+### macOS - Chrome 경로 인식 실패
 
 **증상**:
 ```
-FileNotFoundError: LibreOffice not found
+DependencyError: Chrome not found
 ```
 
 **해결**:
 ```bash
-# LibreOffice 경로 확인
-which soffice
-ls -la /Applications/LibreOffice.app/Contents/MacOS/soffice
+# Chrome 경로 확인
+ls -la "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+ls -la "/Applications/Chromium.app/Contents/MacOS/Chromium"
 
-# 심볼릭 링크 생성
-sudo ln -s /Applications/LibreOffice.app/Contents/MacOS/soffice /usr/local/bin/soffice
+# Chrome이 설치되어 있는데도 인식 안 될 경우
+# constants.py의 CHROME_PATHS에 사용자 경로 추가 필요
 ```
 
 ### Ubuntu - Pandoc 버전 문제
@@ -357,21 +364,25 @@ sudo apt-get install pandoc
 choco install pandoc
 ```
 
-### "Error calling soffice"
+### "Chrome headless failed"
 
-**원인**: LibreOffice 실행 권한 또는 경로 문제
+**원인**: Chrome 실행 권한 또는 경로 문제
 
 **해결**:
 ```bash
-# 실행 권한 확인
-chmod +x /usr/bin/soffice
+# Chrome 수동 실행 테스트 (macOS)
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless \
+  --disable-gpu \
+  --print-to-pdf=/tmp/test.pdf \
+  file:///tmp/test.html
 
-# 수동 실행 테스트
-soffice --headless --convert-to pdf test.odt
+# Linux
+google-chrome --headless --disable-gpu --print-to-pdf=/tmp/test.pdf file:///tmp/test.html
 
 # macOS 보안 설정
 # 시스템 환경설정 > 보안 및 개인 정보 보호 > 일반
-# "확인 없이 열기" 클릭
+# Chrome 실행 허용
 ```
 
 ## 자주 묻는 질문 (FAQ)

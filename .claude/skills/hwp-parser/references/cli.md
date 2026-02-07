@@ -243,7 +243,7 @@ Exit code: 2
 
 # 의존성 누락 (PDF 변환)
 $ hwpparser convert document.hwp output.pdf
-Error: LibreOffice not found. Install with: brew install --cask libreoffice
+Error: Chrome not found. Install with: brew install --cask google-chrome
 Exit code: 4
 ```
 
@@ -282,7 +282,7 @@ FROM python:3.11-slim
 # 시스템 의존성
 RUN apt-get update && apt-get install -y \
     pandoc \
-    libreoffice \
+    chromium-browser \
     && rm -rf /var/lib/apt/lists/*
 
 # hwpparser 설치

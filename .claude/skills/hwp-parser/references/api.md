@@ -39,11 +39,16 @@ hwpparser.hwp_to_odt("document.hwp", "output.odt")
 ```
 
 #### `hwp_to_pdf(file_path: PathLike, output: PathLike) -> None`
-PDF 파일로 저장 (LibreOffice 필요)
+PDF 파일로 저장 (Chrome headless 사용)
+
+HWP → HTML → PDF 파이프라인으로 변환합니다.
 
 ```python
 hwpparser.hwp_to_pdf("document.hwp", "output.pdf")
 ```
+
+**필요 조건**:
+- Chrome 또는 Chromium 브라우저
 
 ### 쓰기 (Writer)
 

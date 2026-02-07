@@ -21,14 +21,20 @@ description: 한글(HWP/HWPX) 문서를 다양한 포맷(Text, HTML, ODT, PDF)�
    pip install hwpparser[all]  # 전체 기능
    ```
 
-3. **시스템 의존성 확인** (PDF 변환 사용 시)
+3. **시스템 의존성 확인**
    ```bash
-   # macOS
-   brew install pandoc
-   brew install --cask libreoffice
+   # PDF 변환 (Chrome headless 사용)
+   # macOS - Chrome이 이미 설치되어 있으면 별도 설치 불필요
+   brew install --cask google-chrome
 
    # Ubuntu/Debian
-   sudo apt install pandoc libreoffice
+   sudo apt install google-chrome-stable
+   # 또는 Chromium
+   sudo apt install chromium-browser
+
+   # HWPX 생성 (선택사항)
+   brew install pandoc  # macOS
+   sudo apt install pandoc  # Ubuntu
    ```
 
 ## 요청 분류
