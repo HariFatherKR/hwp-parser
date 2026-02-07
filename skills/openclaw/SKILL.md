@@ -29,7 +29,7 @@ hwpparser convert input.hwp -f html -o output.html
 hwpparser convert input.hwp -f odt -o output.odt
 ```
 
-### PDF 변환 (LibreOffice 필요)
+### PDF 변환 (Chrome headless)
 ```bash
 hwpparser convert input.hwp -f pdf -o output.pdf
 ```
@@ -46,7 +46,7 @@ hwpparser batch ./documents/ -f text -o ./output/
 | `text` | `.txt` | 순수 텍스트 추출 |
 | `html` | `.html` | HTML 문서 변환 |
 | `odt` | `.odt` | OpenDocument 포맷 |
-| `pdf` | `.pdf` | PDF (LibreOffice 필요) |
+| `pdf` | `.pdf` | PDF (Chrome headless) |
 
 ## Examples
 
@@ -71,13 +71,13 @@ pip install pyhwp six
 ```
 
 ### PDF 변환 실패
-LibreOffice 설치 필요:
+Chrome 또는 Chromium 설치 필요:
 ```bash
 # macOS
-brew install --cask libreoffice
+brew install --cask google-chrome
 
 # Ubuntu
-sudo apt install libreoffice
+sudo apt install chromium-browser
 ```
 
 ## References

@@ -69,7 +69,7 @@ cp skills/claude/CLAUDE.md ./CLAUDE.md
 - ✅ HWP → 텍스트 추출
 - ✅ HWP → HTML 변환
 - ✅ HWP → ODT 변환
-- ✅ HWP → PDF 변환 (LibreOffice 필요)
+- ✅ HWP → PDF 변환 (Chrome headless)
 - ✅ 일괄 변환
 
 ## 기여하기

@@ -34,9 +34,10 @@ class OutputFormat(StrEnum):
 # 의존성 설치 안내
 PYHWP_INSTALL_HINT: Final[str] = "pip install pyhwp"
 PYPANDOC_INSTALL_HINT: Final[str] = "pip install pypandoc-hwpx"
-LIBREOFFICE_INSTALL_HINT: Final[str] = "brew install --cask libreoffice"
 PANDOC_INSTALL_HINT: Final[str] = "brew install pandoc"
 CHROME_INSTALL_HINT: Final[str] = "brew install --cask google-chrome"
+# DEPRECATED: LibreOffice는 더 이상 사용하지 않음 (Chrome headless로 대체)
+# LIBREOFFICE_INSTALL_HINT: Final[str] = "brew install --cask libreoffice"
 
 # Chrome 경로 (macOS)
 CHROME_PATHS: Final[list[str]] = [
@@ -72,4 +73,5 @@ class Command(StrEnum):
     HWP5HTML = "hwp5html"
     HWP5ODT = "hwp5odt"
     PYPANDOC_HWPX = "pypandoc-hwpx"
-    SOFFICE = "soffice"
+    # DEPRECATED: soffice는 더 이상 사용하지 않음 (Chrome headless로 대체)
+    # SOFFICE = "soffice"

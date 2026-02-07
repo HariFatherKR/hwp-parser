@@ -32,7 +32,7 @@ When a user uploads an HWP file or asks about HWP conversion:
 ## Limitations
 - Cannot edit HWP files directly
 - HWPX (XML-based) format is read-only
-- PDF conversion requires server-side LibreOffice
+- PDF conversion requires Chrome/Chromium browser
 
 ## Example Interactions
 

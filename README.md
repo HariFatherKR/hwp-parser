@@ -30,11 +30,11 @@ pip install -e ".[all]"
 
 ```bash
 # macOS
-brew install pandoc
-brew install --cask libreoffice  # PDF 변환용
+brew install pandoc  # HWPX 생성용
+brew install --cask google-chrome  # PDF 변환용 (이미 설치되어 있으면 불필요)
 
 # Ubuntu/Debian
-sudo apt install pandoc libreoffice
+sudo apt install pandoc chromium-browser
 ```
 
 ## 빠른 시작

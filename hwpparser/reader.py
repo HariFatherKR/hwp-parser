@@ -125,7 +125,7 @@ class HWPReader:
         return hwp_to_odt(self.path, output_path)
 
     def to_pdf(self, output_path: PathLike) -> Path:
-        """HWP를 PDF로 변환합니다 (LibreOffice 필요).
+        """HWP를 PDF로 변환합니다 (Chrome headless 사용).
 
         Args:
             output_path: 출력 파일 경로
@@ -251,7 +251,6 @@ def hwp_to_pdf(path: PathLike, output_path: PathLike) -> Path:
     """HWP를 PDF로 변환합니다.
 
     HTML을 거쳐 Chrome headless로 PDF를 생성합니다.
-    LibreOffice가 필요 없습니다.
 
     Args:
         path: HWP 파일 경로

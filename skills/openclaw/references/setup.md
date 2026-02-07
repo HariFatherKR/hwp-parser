@@ -4,7 +4,7 @@
 
 - Python 3.11+
 - pip
-- (PDF 변환 시) LibreOffice
+- (PDF 변환 시) Chrome 또는 Chromium
 
 ## 설치
 
@@ -27,21 +27,26 @@ pip install -e .
 - **six**: Python 2/3 호환성
 - **click**: CLI 인터페이스
 
-## PDF 변환을 위한 LibreOffice 설치
+## PDF 변환을 위한 Chrome 설치
 
 ### macOS
+Chrome이 이미 설치되어 있으면 별도 설치 불필요
 ```bash
-brew install --cask libreoffice
+brew install --cask google-chrome
+# 또는 Chromium
+brew install --cask chromium
 ```
 
 ### Ubuntu/Debian
 ```bash
 sudo apt update
-sudo apt install libreoffice
+sudo apt install chromium-browser
+# 또는
+sudo apt install google-chrome-stable
 ```
 
 ### Windows
-[LibreOffice 공식 사이트](https://www.libreoffice.org/download/download/)에서 다운로드
+[Chrome 공식 사이트](https://www.google.com/chrome/)에서 다운로드
 
 ## 설치 확인
 
