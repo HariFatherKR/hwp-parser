@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: HWP Parser API
+  description: 한글(HWP) 파일 변환 API
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+
+paths:
+  /hwp/convert:
+    post:
+      operationId: hwpConvert
+      summary: HWP 파일을 다른 형식으로 변환
+      description: HWP 파일을 텍스트, HTML, ODT, PDF로 변환합니다.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: HWP 파일
+                format:
+                  type: string
+                  enum: [text, html, odt, pdf]
+                  default: text
+                  description: 출력 형식
+              required:
+                - file
+      responses:
+        '200':
+          description: 변환 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  content:
+                    type: string
+                    description: 변환된 텍스트 (format=text인 경우)
+                  download_url:
+                    type: string
+                    description: 변환된 파일 다운로드 URL
+                  filename:
+                    type: string
+                    description: 변환된 파일명
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 지원하지 않는 파일 형식
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /hwp/extract-text:
+    post:
+      operationId: hwpExtractText
+      summary: HWP 파일에서 텍스트 추출
+      description: HWP 파일의 텍스트 내용만 추출합니다.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: HWP 파일
+              required:
+                - file
+      responses:
+        '200':
+          description: 추출 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  text:
+                    type: string
+                    description: 추출된 텍스트
+                  char_count:
+                    type: integer
+                    description: 문자 수
+                  page_count:
+                    type: integer
+                    description: 예상 페이지 수
+
+  /hwp/batch:
+    post:
+      operationId: hwpBatchConvert
+      summary: 여러 HWP 파일 일괄 변환
+      description: 여러 HWP 파일을 한번에 변환합니다.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: HWP 파일 목록
+                format:
+                  type: string
+                  enum: [text, html, odt, pdf]
+                  default: text
+              required:
+                - files
+      responses:
+        '200':
+          description: 일괄 변환 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filename:
+                          type: string
+                        status:
+                          type: string
+                          enum: [success, error]
+                        download_url:
+                          type: string
+                        error:
+                          type: string
+                  download_zip:
+                    type: string
+                    description: 전체 파일 ZIP 다운로드 URL
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: 오류 메시지
+        code:
+          type: string
+          description: 오류 코드

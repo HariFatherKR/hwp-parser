@@ -1,0 +1,88 @@
+{
+  "function_declarations": [
+    {
+      "name": "convert_hwp",
+      "description": "HWP 파일을 다른 형식으로 변환합니다 (text, html, odt, pdf)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "변환할 HWP 파일 경로"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["text", "html", "odt", "pdf"],
+            "description": "출력 형식"
+          },
+          "output_path": {
+            "type": "string",
+            "description": "출력 파일 경로 (선택사항)"
+          }
+        },
+        "required": ["file_path", "output_format"]
+      }
+    },
+    {
+      "name": "extract_text",
+      "description": "HWP 파일에서 텍스트만 추출합니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "HWP 파일 경로"
+          },
+          "include_metadata": {
+            "type": "boolean",
+            "description": "메타데이터 포함 여부",
+            "default": false
+          }
+        },
+        "required": ["file_path"]
+      }
+    },
+    {
+      "name": "batch_convert",
+      "description": "여러 HWP 파일을 일괄 변환합니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "input_directory": {
+            "type": "string",
+            "description": "HWP 파일들이 있는 디렉토리"
+          },
+          "output_directory": {
+            "type": "string",
+            "description": "변환된 파일을 저장할 디렉토리"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["text", "html", "odt", "pdf"],
+            "description": "출력 형식"
+          },
+          "recursive": {
+            "type": "boolean",
+            "description": "하위 폴더 포함 여부",
+            "default": false
+          }
+        },
+        "required": ["input_directory", "output_format"]
+      }
+    },
+    {
+      "name": "get_file_info",
+      "description": "HWP 파일의 메타데이터와 구조 정보를 조회합니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "HWP 파일 경로"
+          }
+        },
+        "required": ["file_path"]
+      }
+    }
+  ]
+}

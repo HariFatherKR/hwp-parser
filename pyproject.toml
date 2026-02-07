@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hwpparser"
+version = "0.1.0"
+description = "LLM 활용을 위한 한글(HWP/HWPX) 문서 파서 및 변환기"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    { name = "HariFatherKR", email = "harifatherkr@gmail.com" }
+]
+keywords = ["hwp", "hwpx", "korean", "hangul", "document", "parser", "converter", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Korean",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: General",
+]
+dependencies = [
+    "pyhwp>=0.1b12",
+]
+
+[project.optional-dependencies]
+hwpx = [
+    "pypandoc-hwpx>=0.1.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+all = [
+    "hwpparser[hwpx,dev]",
+]
+
+[project.scripts]
+hwpparser = "hwpparser.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/harifatherkr/hwpparser"
+Repository = "https://github.com/harifatherkr/hwpparser"
+Issues = "https://github.com/harifatherkr/hwpparser/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["hwpparser"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["hwpparser"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

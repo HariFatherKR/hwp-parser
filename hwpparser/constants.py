@@ -1,0 +1,65 @@
+"""
+HWP Parser 상수 정의
+
+모든 상수를 한 곳에서 관리합니다.
+"""
+
+from __future__ import annotations
+
+from enum import StrEnum
+from typing import Final
+
+
+class InputFormat(StrEnum):
+    """지원하는 입력 포맷."""
+
+    HWP = "hwp"
+    MARKDOWN = "markdown"
+    MD = "md"
+    HTML = "html"
+    DOCX = "docx"
+
+
+class OutputFormat(StrEnum):
+    """지원하는 출력 포맷."""
+
+    TEXT = "text"
+    TXT = "txt"
+    HTML = "html"
+    ODT = "odt"
+    PDF = "pdf"
+    HWPX = "hwpx"
+
+
+# 의존성 설치 안내
+PYHWP_INSTALL_HINT: Final[str] = "pip install pyhwp"
+PYPANDOC_INSTALL_HINT: Final[str] = "pip install pypandoc-hwpx"
+LIBREOFFICE_INSTALL_HINT: Final[str] = "brew install --cask libreoffice"
+PANDOC_INSTALL_HINT: Final[str] = "brew install pandoc"
+
+# 기본 인코딩
+DEFAULT_ENCODING: Final[str] = "utf-8"
+
+# 확장자 → 포맷 매핑
+EXTENSION_TO_FORMAT: Final[dict[str, str]] = {
+    ".hwp": "hwp",
+    ".hwpx": "hwpx",
+    ".md": "markdown",
+    ".markdown": "markdown",
+    ".html": "html",
+    ".htm": "html",
+    ".docx": "docx",
+    ".txt": "text",
+    ".odt": "odt",
+    ".pdf": "pdf",
+}
+
+# CLI 명령어
+class Command(StrEnum):
+    """외부 CLI 명령어."""
+
+    HWP5TXT = "hwp5txt"
+    HWP5HTML = "hwp5html"
+    HWP5ODT = "hwp5odt"
+    PYPANDOC_HWPX = "pypandoc-hwpx"
+    SOFFICE = "soffice"
