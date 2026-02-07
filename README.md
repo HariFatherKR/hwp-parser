@@ -172,6 +172,17 @@ ruff check hwpparser
 mypy hwpparser
 ```
 
+## 의존성 및 저작권
+
+이 프로젝트는 다음 오픈소스 라이브러리를 사용합니다:
+
+- **pyhwp** (Copyright © 2010-2023 mete0r)
+  - 라이선스: GNU Affero General Public License v3 (AGPL v3)
+  - 저장소: https://github.com/mete0r/pyhwp
+  - 용도: HWP 파일 파싱 및 변환
+
+**중요**: 이 프로젝트는 AGPL v3 라이브러리(pyhwp)에 의존합니다. AGPL v3는 카피레프트 라이선스로, 이 프로젝트를 서비스로 제공하거나 배포할 경우 소스 코드 공개 의무가 발생할 수 있습니다.
+
 ## 라이선스
 
-MIT
+MIT (단, AGPL 의존성에 주의)

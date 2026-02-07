@@ -28,6 +28,9 @@ classifiers = [
     "Topic :: Text Processing :: General",
 ]
 dependencies = [
+    # IMPORTANT: pyhwp is licensed under AGPL v3
+    # Copyright (C) 2010-2023 mete0r <https://github.com/mete0r/pyhwp>
+    # Using this library may require compliance with AGPL v3 terms
     "pyhwp>=0.1b12",
 ]
 
