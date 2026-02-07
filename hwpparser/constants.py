@@ -36,6 +36,16 @@ PYHWP_INSTALL_HINT: Final[str] = "pip install pyhwp"
 PYPANDOC_INSTALL_HINT: Final[str] = "pip install pypandoc-hwpx"
 LIBREOFFICE_INSTALL_HINT: Final[str] = "brew install --cask libreoffice"
 PANDOC_INSTALL_HINT: Final[str] = "brew install pandoc"
+CHROME_INSTALL_HINT: Final[str] = "brew install --cask google-chrome"
+
+# Chrome 경로 (macOS)
+CHROME_PATHS: Final[list[str]] = [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "/opt/homebrew/bin/chromium",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+]
 
 # 기본 인코딩
 DEFAULT_ENCODING: Final[str] = "utf-8"

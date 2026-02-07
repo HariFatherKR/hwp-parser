@@ -14,8 +14,9 @@ from typing import Any
 from ._logging import get_logger
 from ._types import PathLike
 from .constants import (
+    CHROME_INSTALL_HINT,
+    CHROME_PATHS,
     DEFAULT_ENCODING,
-    LIBREOFFICE_INSTALL_HINT,
     PYHWP_INSTALL_HINT,
     Command,
 )
@@ -238,10 +239,19 @@ def hwp_to_odt(path: PathLike, output_path: PathLike) -> Path:
     return output_path
 
 
+def _find_chrome() -> str | None:
+    """시스템에 설치된 Chrome/Chromium 경로를 찾습니다."""
+    for chrome_path in CHROME_PATHS:
+        if Path(chrome_path).exists():
+            return chrome_path
+    return None
+
+
 def hwp_to_pdf(path: PathLike, output_path: PathLike) -> Path:
     """HWP를 PDF로 변환합니다.
 
-    ODT를 거쳐 LibreOffice로 PDF를 생성합니다.
+    HTML을 거쳐 Chrome headless로 PDF를 생성합니다.
+    LibreOffice가 필요 없습니다.
 
     Args:
         path: HWP 파일 경로
@@ -251,32 +261,54 @@ def hwp_to_pdf(path: PathLike, output_path: PathLike) -> Path:
         생성된 PDF 파일 경로
 
     Raises:
-        DependencyError: LibreOffice가 설치되지 않은 경우
+        DependencyError: Chrome이 설치되지 않은 경우
+        ConversionError: 변환 실패 시
     """
     path = validate_file_exists(path)
     output_path = ensure_path(output_path)
-    check_command_exists(Command.SOFFICE, LIBREOFFICE_INSTALL_HINT)
 
-    logger.info("PDF 변환 시작: %s → %s", path, output_path)
+    chrome_path = _find_chrome()
+    if chrome_path is None:
+        from .exceptions import DependencyError
+        raise DependencyError("chrome", CHROME_INSTALL_HINT)
+
+    logger.info("PDF 변환 시작 (Chrome headless): %s → %s", path, output_path)
 
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_dir_path = Path(temp_dir)
-        temp_odt = temp_dir_path / "temp.odt"
+        html_output_dir = temp_dir_path / "html"
+        html_output_dir.mkdir()
 
-        # HWP → ODT
-        hwp_to_odt(path, temp_odt)
-
-        # ODT → PDF (LibreOffice)
+        # HWP → HTML
+        check_command_exists(Command.HWP5HTML, PYHWP_INSTALL_HINT)
         run_command(
-            [Command.SOFFICE, "--headless", "--convert-to", "pdf", "--outdir", temp_dir, str(temp_odt)],
-            error_message=f"ODT → PDF 변환 실패: {temp_odt}",
+            [Command.HWP5HTML, str(path), "--output", str(html_output_dir)],
+            error_message=f"HWP → HTML 변환 실패: {path}",
         )
 
-        temp_pdf = temp_dir_path / "temp.pdf"
-        if not temp_pdf.exists():
-            raise ConversionError(f"PDF 파일이 생성되지 않았습니다: {temp_pdf}")
+        # HTML 파일 찾기
+        html_file = html_output_dir / "index.xhtml"
+        if not html_file.exists():
+            html_file = html_output_dir / "index.html"
+        if not html_file.exists():
+            raise ConversionError(f"HTML 파일이 생성되지 않았습니다: {html_output_dir}")
 
-        move_file(temp_pdf, output_path)
+        # HTML → PDF (Chrome headless)
+        run_command(
+            [
+                chrome_path,
+                "--headless",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--print-to-pdf=" + str(output_path),
+                "--print-to-pdf-no-header",
+                f"file://{html_file}",
+            ],
+            error_message=f"HTML → PDF 변환 실패: {html_file}",
+        )
+
+        if not output_path.exists():
+            raise ConversionError(f"PDF 파일이 생성되지 않았습니다: {output_path}")
 
     logger.info("PDF 변환 완료: %s", output_path)
     return output_path
