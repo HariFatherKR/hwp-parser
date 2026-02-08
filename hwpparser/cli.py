@@ -21,7 +21,7 @@ from ._logging import get_logger, setup_logging
 from .constants import DEFAULT_ENCODING
 from .converter import convert, get_supported_conversions
 from .exceptions import ConversionError, DependencyError, HWPFileNotFoundError, HWPParserError
-from .reader import hwp_to_text
+from .reader import hwp_to_text, hwp_to_rich_text
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -69,10 +69,21 @@ def create_parser() -> argparse.ArgumentParser:
     # text 명령어 (HWP → 텍스트 단축)
     text_parser = subparsers.add_parser(
         "text",
-        help="HWP에서 텍스트 추출",
+        help="HWP에서 텍스트 추출 (표는 <표>로 표시됨)",
     )
     text_parser.add_argument("input", help="HWP 파일 경로")
     text_parser.add_argument(
+        "-o", "--output",
+        help="출력 파일 (미지정 시 stdout)",
+    )
+
+    # rich-text 명령어 (표 포함 텍스트 추출)
+    rich_text_parser = subparsers.add_parser(
+        "rich-text",
+        help="HWP에서 표를 포함한 텍스트 추출 (마크다운 테이블)",
+    )
+    rich_text_parser.add_argument("input", help="HWP 파일 경로")
+    rich_text_parser.add_argument(
         "-o", "--output",
         help="출력 파일 (미지정 시 stdout)",
     )
@@ -106,6 +117,19 @@ def cmd_convert(args: argparse.Namespace) -> int:
 def cmd_text(args: argparse.Namespace) -> int:
     """text 명령어 실행."""
     text = hwp_to_text(args.input)
+
+    if args.output:
+        Path(args.output).write_text(text, encoding=DEFAULT_ENCODING)
+        print(f"생성됨: {args.output}", file=sys.stderr)
+    else:
+        print(text)
+
+    return 0
+
+
+def cmd_rich_text(args: argparse.Namespace) -> int:
+    """rich-text 명령어 실행."""
+    text = hwp_to_rich_text(args.input)
 
     if args.output:
         Path(args.output).write_text(text, encoding=DEFAULT_ENCODING)
@@ -150,6 +174,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     handlers = {
         "convert": cmd_convert,
         "text": cmd_text,
+        "rich-text": cmd_rich_text,
         "formats": cmd_formats,
     }
 
